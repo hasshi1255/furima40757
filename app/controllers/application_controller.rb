@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :basic_auth
+  before_action :basic_auth, unless: :devise_controller?
 
   private
 
