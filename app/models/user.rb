@@ -7,15 +7,8 @@ class User < ApplicationRecord
   # ニックネームが必須であること
   validates :nickname, presence: true
 
-  # メールアドレスが必須であること、一意性であること、@を含む形式であること
-  validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@[^@\s]+\z/ }
-
   # パスワードが必須であること、6文字以上であること、半角英数字混合であること
-  validates :password, presence: true, length: { minimum: 6 },
-                       format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i }
-
-  # パスワードとパスワード（確認）が一致していること
-  validates :password_confirmation, presence: true, on: :create
+  validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i }
 
   # お名前(全角)が必須であること、全角（漢字・ひらがな・カタカナ）での入力が必須であること
   validates :last_name, :first_name, presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/ }
