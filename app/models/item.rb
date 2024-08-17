@@ -23,9 +23,10 @@ class Item < ApplicationRecord
   validates :category_id, :condition_id, :shipping_cost_id, :prefecture_id, :shipping_day_id,
             numericality: { greater_than: 1, message: 'を選択してください' }
 
-  # 価格が必須であること、かつ価格が¥300~¥9,999,999の範囲内であること
+  # 価格が必須であること、かつ価格が¥300~¥9,999,999の範囲内であること、半角数値のみを許可する
   validates :price, presence: true,
-                    numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 }
+                    numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 },
+                    format: { with: /\A[0-9]+\z/, message: 'は半角数字のみで入力してください' }
 
   # 商品画像が必須であること
   validates :image, presence: true
