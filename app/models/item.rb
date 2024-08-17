@@ -25,8 +25,7 @@ class Item < ApplicationRecord
 
   # 価格が必須であること、かつ価格が¥300~¥9,999,999の範囲内であること、半角数値のみを許可する
   validates :price, presence: true,
-                    numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 },
-                    format: { with: /\A[0-9]+\z/, message: 'は半角数字のみで入力してください' }
+                    numericality: { only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 }
 
   # 商品画像が必須であること
   validates :image, presence: true
