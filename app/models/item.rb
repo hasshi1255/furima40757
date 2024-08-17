@@ -1,12 +1,14 @@
 class Item < ApplicationRecord
   extend ActiveHash::Associations::ActiveRecordExtensions
 
+  # ActiveHashとのアソシエーション
   belongs_to :category
   belongs_to :condition
   belongs_to :shipping_cost
   belongs_to :prefecture
   belongs_to :shipping_day
 
+  # その他のアソシエーション
   belongs_to :user
   has_one_attached :image
 
@@ -16,20 +18,10 @@ class Item < ApplicationRecord
   # 商品の説明が必須であること
   validates :description, presence: true
 
-  # カテゴリーの情報が必須であること
-  validates :category_id, presence: true
-
-  # 商品の状態の情報が必須であること
-  validates :condition_id, presence: true
-
-  # 配送料の負担の情報が必須であること
-  validates :shipping_cost_id, presence: true
-
-  # 発送元の地域の情報が必須であること
-  validates :prefecture_id, presence: true
-
-  # 発送までの日数の情報が必須であること
-  validates :shipping_day_id, presence: true
+  # ActiveHashの項目に関するバリデーション
+  # "1"は「---」に対応するID値を想定しています
+  validates :category_id, :condition_id, :shipping_cost_id, :prefecture_id, :shipping_day_id,
+            numericality: { greater_than: 1, message: 'を選択してください' }
 
   # 価格が必須であること、かつ価格が¥300~¥9,999,999の範囲内であること
   validates :price, presence: true,
