@@ -1,0 +1,36 @@
+ja:
+  activerecord:
+    attributes:
+      item:
+        name: 'Name'
+        description: 'Info'
+        category_id: 'Category'
+        condition_id: 'Sales status'
+        shipping_cost_id: 'Shipping fee status'
+        prefecture_id: 'Prefecture'
+        shipping_day_id: 'Scheduled delivery'
+        price: 'Price'
+        image: 'Image'
+    errors:
+      models:
+        item:
+          attributes:
+            name:
+              blank: "can't be blank"
+            description:
+              blank: "can't be blank"
+            category_id:
+              blank: "can't be blank"
+            condition_id:
+              blank: "can't be blank"
+            shipping_cost_id:
+              blank: "can't be blank"
+            prefecture_id:
+              blank: "can't be blank"
+            shipping_day_id:
+              blank: "can't be blank"
+            price:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+            image:
+              blank: "can't be blank"
