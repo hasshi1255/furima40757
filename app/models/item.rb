@@ -30,6 +30,8 @@ class Item < ApplicationRecord
   # 商品画像が必須であること
   validates :image, presence: true
 
+  has_one :purchase
+
   def sold_out?
     status == 'sold_out'
   end
