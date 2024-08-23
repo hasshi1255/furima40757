@@ -89,3 +89,4 @@ group :development, :test do
 end
 
 gem 'active_hash'
+gem 'image_processing', '~> 1.2'
