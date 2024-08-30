@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update]
-  before_action :set_item, only: [:edit, :update]
+  before_action :set_item, only: [:show, :edit, :update]
   before_action :check_item_owner, only: [:edit, :update]
 
   def new
@@ -21,15 +21,13 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
-  end
+    @item
 
   def edit
-    @item = Item.find(params[:id])
+    @item
   end
 
   def update
-    @item = Item.find(params[:id])
     if @item.update(item_params)
       redirect_to @item
     else
