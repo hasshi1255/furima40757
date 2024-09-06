@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'purchases/index'
+  get 'purchases/create'
   devise_for :users
   resources :users
 
