@@ -7,8 +7,6 @@ class PurchasesController < ApplicationController
     @purchase = Purchase.new
     @shipping_address = ShippingAddress.new
     @item = Item.find(params[:item_id])
-
-    render 'orders/index'
   end
 
   def create
@@ -16,13 +14,8 @@ class PurchasesController < ApplicationController
 
     if @purchase.valid?
       pay_item
-      @shipping_address = @purchase.build_shipping_address(order_params)
-
-      if @shipping_address.save
-        redirect_to root_path, notice: '購入が完了しました。'
-      else
-        render :index, status: :unprocessable_entity
-      end
+      @shipping_address.save
+      redirect_to root_path
     else
       render :index, status: :unprocessable_entity
     end
