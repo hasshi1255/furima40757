@@ -1,20 +1,17 @@
 class PurchasesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item, only: [:index, :create]
-  before_action :redirect_if_item_sold_out_or_owned, only: [:index]
+  before_action :redirect_if_item_sold_out_or_owned, only: [:index, :create]
 
   def index
-    @purchase = Purchase.new
-    @shipping_address = ShippingAddress.new
-    @item = Item.find(params[:item_id])
+    @purchase_shipping = PurchaseShipping.new
   end
 
   def create
-    @purchase = Purchase.new(user: current_user, item: @item)
-
-    if @purchase.valid?
+    @purchase_shipping = PurchaseShipping.new(purchase_shipping_params)
+    if @purchase_shipping.valid?
       pay_item
-      @shipping_address.save
+      @purchase_shipping.save
       redirect_to root_path
     else
       render :index, status: :unprocessable_entity
@@ -33,17 +30,18 @@ class PurchasesController < ApplicationController
     redirect_to root_path
   end
 
-  def order_params
-    params.require(:purchase).permit(:postal_code, :prefecture_id, :city, :address, :building_name,
-                                     :phone_number).merge(token: params[:token])
+  def purchase_shipping_params
+    params.require(:purchase_shipping).permit(:postal_code, :prefecture_id, :city, :address, :building_name, :phone_number).merge(
+      user_id: current_user.id, item_id: @item.id, token: params[:token]
+    )
   end
 
   def pay_item
-    Payjp.api_key = 'sk_test_5189c670933163d318dc124d' # 自身のPAY.JPテスト秘密鍵を記述しましょう
+    Payjp.api_key = 'sk_test_5189c670933163d318dc124d'
     Payjp::Charge.create(
-      amount: @item.price, # 商品の値段
-      card: order_params[:token], # カードトークン
-      currency: 'jpy' # 通貨の種類（日本円）
+      amount: @item.price,
+      card: purchase_shipping_params[:token],
+      currency: 'jpy'
     )
   end
 end
