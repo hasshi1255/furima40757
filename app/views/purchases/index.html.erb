@@ -31,7 +31,7 @@
     </div>
     
 
-    <%= form_with model: @purchase, url: item_purchases_path(@item), id: 'charge-form', class: 'transaction-form-wrap',local: true do |f| %>
+    <%= form_with model: @purchase_shipping, url: item_purchases_path(@item.id), id: 'charge-form', class: 'transaction-form-wrap',local: true do |f| %>
     
       <%= render "shared/error_messages", model: f.object %>
       
@@ -121,6 +121,9 @@
         </div>
       </div>
       <%# /配送先の入力 %>
+      
+      <%= hidden_field_tag :token, '', id: 'card-token' %>
+
       <div class='buy-btn'>
         <%= f.submit "購入" ,class:"buy-red-btn", id:"button" %>
       </div>
