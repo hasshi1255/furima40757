@@ -11,18 +11,15 @@ class PurchaseShipping
   validates :phone_number, presence: true, format: { with: /\A\d{10,11}\z/ }
 
   def save
-    # 購入情報を保存
-    purchase = Purchase.create(user_id:, item_id:)
-
-    # 配送先情報を保存
-    ShippingAddress.create(
-      postal_code:,
-      prefecture_id:,
-      city:,
-      address:,
-      building_name:,
-      phone_number:,
-      purchase_id: purchase.id
-    )
+      purchase = Purchase.create!(user_id: user_id, item_id: item_id)
+      shipping_address = ShippingAddress.create!(
+        postal_code: postal_code,
+        prefecture_id: prefecture_id,
+        city: city,
+        address: address,
+        building_name: building_name,
+        phone_number: phone_number,
+        purchase_id: purchase.id
+      )
   end
 end
