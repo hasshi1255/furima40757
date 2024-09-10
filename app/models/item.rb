@@ -11,6 +11,7 @@ class Item < ApplicationRecord
   # その他のアソシエーション
   belongs_to :user
   has_one_attached :image
+  has_one :purchase
 
   # 商品名が必須であること
   validates :name, presence: true
@@ -30,9 +31,7 @@ class Item < ApplicationRecord
   # 商品画像が必須であること
   validates :image, presence: true
 
-  # has_one :purchase
-
   def sold_out?
-    status == 'sold_out'
+    purchase.present?
   end
 end
