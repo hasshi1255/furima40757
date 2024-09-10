@@ -13,9 +13,11 @@
         <%= image_tag "item-sample.png", class: "item-box-img" %>
       <% end %>
 
-      <div class="sold-out">
-        <span>Sold Out!!</span>
-      </div>
+      <% if @item.purchase.present? %>
+        <div class="sold-out">
+          <span>Sold Out!!</span>
+        </div>
+      <% end %>
     </div>
 
     <div class="item-price-box">
