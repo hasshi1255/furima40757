@@ -3,6 +3,8 @@ class PurchaseShipping
   attr_accessor :token, :postal_code, :prefecture_id, :city, :address, :building_name, :phone_number, :user_id, :item_id
 
   # バリデーション
+  validates :user_id, presence: true
+  validates :item_id, presence: true
   validates :token, presence: true
   validates :postal_code, presence: true, format: { with: /\A\d{3}-\d{4}\z/ }
   validates :prefecture_id, numericality: { other_than: 1 }
