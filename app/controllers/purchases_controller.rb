@@ -4,6 +4,7 @@ class PurchasesController < ApplicationController
   before_action :redirect_if_item_sold_out_or_owned, only: [:index, :create]
 
   def index
+    gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @purchase_shipping = PurchaseShipping.new
   end
 
@@ -37,7 +38,7 @@ class PurchasesController < ApplicationController
   end
 
   def pay_item
-    Payjp.api_key = 'sk_test_5189c670933163d318dc124d'
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
     Payjp::Charge.create(
       amount: @item.price,
       card: purchase_shipping_params[:token],
