@@ -17,7 +17,11 @@ RSpec.describe PurchaseShipping, type: :model do
         @purchase.city = '東京都'
         @purchase.address = '1-1'
         @purchase.phone_number = '09012345678'
+        expect(@purchase).to be_valid
+      end
 
+      it '建物名が空でも購入できること' do
+        @purchase.building_name = nil
         expect(@purchase).to be_valid
       end
     end
@@ -42,9 +46,9 @@ RSpec.describe PurchaseShipping, type: :model do
       end
 
       it '都道府県が必須であること' do
-        @purchase.prefecture_id = nil
+        @purchase.prefecture_id = 1
         @purchase.valid?
-        expect(@purchase.errors.full_messages).to include("Prefecture is not a number")
+        expect(@purchase.errors.full_messages).to include("Prefecture must be other than 1")
       end
 
       it '市区町村が必須であること' do
@@ -71,6 +75,24 @@ RSpec.describe PurchaseShipping, type: :model do
         expect(@purchase.errors.full_messages).to include('Phone number is invalid')
       end
 
+      it '電話番号が9桁以下では保存できないこと' do
+        @purchase.phone_number = '090123456'
+        @purchase.valid?
+        expect(@purchase.errors.full_messages).to include('Phone number is invalid')
+      end
+      
+      it '電話番号が12桁以上では保存できないこと' do
+        @purchase.phone_number = '090123456789'
+        @purchase.valid?
+        expect(@purchase.errors.full_messages).to include('Phone number is invalid')
+      end
+      
+      it '電話番号は半角数値以外では保存できないこと' do
+        @purchase.phone_number = '090-1234-5678'
+        @purchase.valid?
+        expect(@purchase.errors.full_messages).to include('Phone number is invalid')
+      end
+
       it 'userが紐づいていないと購入できないこと' do
         @purchase.user_id = nil
         @purchase.valid?
@@ -81,6 +103,12 @@ RSpec.describe PurchaseShipping, type: :model do
         @purchase.item_id = nil
         @purchase.valid?
         expect(@purchase.errors.full_messages).to include("Item can't be blank")
+      end
+
+      it 'tokenが紐づいていないと購入できないこと' do
+        @purchase.token = nil
+        @purchase.valid?
+        expect(@purchase.errors.full_messages).to include("Token can't be blank")
       end
     end
   end
