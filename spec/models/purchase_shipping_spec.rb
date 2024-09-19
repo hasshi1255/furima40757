@@ -5,18 +5,13 @@ require 'rails_helper'
 RSpec.describe PurchaseShipping, type: :model do
   before do
     @user = FactoryBot.create(:user)
-    @item = FactoryBot.create(:item, user: @user)
+    @item = FactoryBot.create(:item)
     @purchase = FactoryBot.build(:purchase_shipping, user_id: @user.id, item_id: @item.id)
   end
 
   describe '商品購入' do
     context '商品が購入できるとき' do
       it '必要な情報を適切に入力して購入ボタンを押すと、商品の購入ができること' do
-        @purchase.postal_code = '123-4567'
-        @purchase.prefecture_id = 2
-        @purchase.city = '東京都'
-        @purchase.address = '1-1'
-        @purchase.phone_number = '09012345678'
         expect(@purchase).to be_valid
       end
 
