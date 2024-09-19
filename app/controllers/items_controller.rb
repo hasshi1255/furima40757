@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :check_item_owner, only: [:edit, :update, :destroy]
+  before_action :check_item_sold_out, only: [:edit, :update]
 
   def new
     @item = Item.new
@@ -10,7 +11,7 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     if @item.save
-      redirect_to root_path, notice: '商品が出品されました'
+      redirect_to root_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -47,6 +48,12 @@ class ItemsController < ApplicationController
 
   def check_item_owner
     redirect_to root_path unless @item.user_id == current_user.id
+  end
+
+  def check_item_sold_out
+    if @item.purchase.present?
+      redirect_to root_path
+    end
   end
 
   def item_params
